@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
     public void Move(float move, bool jump, bool jumping)
     {
 
-        Vector3 targetVelocity = new Vector2(move * 10f, rb.velocity.y);
+        Vector3 targetVelocity = new Vector2(move * movementSpeed, rb.velocity.y);
         // And then smoothing it out and applying it to the character
         rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, movementSmoothing);
 

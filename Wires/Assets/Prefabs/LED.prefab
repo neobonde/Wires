@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 4430770796644734037}
   - component: {fileID: 4430770796644734038}
   - component: {fileID: 4430770796644734034}
+  - component: {fileID: 647473191}
+  - component: {fileID: 647473190}
   m_Layer: 0
   m_Name: LED
   m_TagString: Untagged
@@ -96,10 +98,10 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.49840015}
+  m_Offset: {x: -0.0016711056, y: -0.03553773}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0.1}
     oldSize: {x: 1, y: 1}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
@@ -107,7 +109,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.0031996965}
+  m_Size: {x: 0.9634082, y: 0.0791764}
   m_EdgeRadius: 0
 --- !u!50 &4430770796644734038
 Rigidbody2D:
@@ -144,6 +146,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OffSprite: {fileID: 21300000, guid: 616c22d3a53c05d42b7c8f1320452eee, type: 3}
   OnSprite: {fileID: 21300002, guid: 616c22d3a53c05d42b7c8f1320452eee, type: 3}
+--- !u!61 &647473191
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4430770796644734039}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.14469016, y: 0.21290886}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.1}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.67801213, y: 0.4320581}
+  m_EdgeRadius: 0
+--- !u!114 &647473190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4430770796644734039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f40e7e979401e94b9d94c6554184c5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uprightTorque: 2
+  angularDrag: 4
 --- !u!1001 &3060905795002508363
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -164,7 +206,7 @@ PrefabInstance:
     - target: {fileID: 1100062907167729776, guid: 634812c066b2e434facb044b68f55c74,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.159
+      value: 0.241
       objectReference: {fileID: 0}
     - target: {fileID: 1100062907167729776, guid: 634812c066b2e434facb044b68f55c74,
         type: 3}

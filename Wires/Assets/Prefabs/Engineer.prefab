@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bcc5fad151e8c247adf6dbbad5a82a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 500
+  movementSpeed: 250
   m_JumpForce: 400
   movementSmoothing: 0.05
   groundCheck: {fileID: 9150152773563493160}
@@ -269,7 +269,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dff72e80010e4540a3f30f1c49caf9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 40
 --- !u!114 &9150152773677657375
 MonoBehaviour:
   m_ObjectHideFlags: 0

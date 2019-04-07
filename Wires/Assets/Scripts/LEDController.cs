@@ -25,6 +25,7 @@ public class LEDController : MonoBehaviour
 
     void Awake()
     {
+        Physics2D.IgnoreCollision(GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>(), GetComponent<Collider2D>(),true);
         input = GetComponentInChildren<PinController>();
         sr = GetComponent<SpriteRenderer>();
     }

@@ -69,6 +69,10 @@ public class WireController : MonoBehaviour
 
         if(connections.Count == 1)
         {
+            // If tool changes cancel wire
+            if(ToolController.Tool != ToolController.ToolType.WIRE)
+                CutWire();
+            
             //If one connection exists the one side of the wire follows the mouse
             connection1 = new Vector3(connections[0].transform.position.x, connections[0].transform.position.y, transform.position.z);
             connection2 = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, transform.position.z);
