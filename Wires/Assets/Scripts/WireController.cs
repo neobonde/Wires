@@ -70,7 +70,7 @@ public class WireController : MonoBehaviour
         if(connections.Count == 1)
         {
             // If tool changes cancel wire
-            if(ToolController.Tool != ToolController.ToolType.WIRE)
+            if(ToolController.SelectedTool != ToolController.ToolType.WIRE)
                 CutWire();
             
             //If one connection exists the one side of the wire follows the mouse
@@ -82,6 +82,9 @@ public class WireController : MonoBehaviour
         }
         else if(connections.Count == 2)
         {
+            // If reference to pins is lost disconnect self
+            if (!CheckConnections())
+                return;
             //if there are two connections then the wire is stuck between to gates
             connection1 = new Vector3(connections[0].transform.position.x, connections[0].transform.position.y, transform.position.z);
             connection2 = new Vector3(connections[1].transform.position.x, connections[1].transform.position.y, transform.position.z);
@@ -90,7 +93,7 @@ public class WireController : MonoBehaviour
             col.points = new Vector2[] { connection1, connection2};
         }
 
-        if(ToolController.Tool == ToolController.ToolType.WIRE_CUTTER)
+        if(ToolController.SelectedTool == ToolController.ToolType.WIRE_CUTTER)
         {
             if(Input.GetMouseButtonDown(0))
             {
@@ -104,17 +107,26 @@ public class WireController : MonoBehaviour
         }
     }
 
-    void CheckConnections()
+    bool CheckConnections()
     {
         foreach (var pin in connections)
         {
-            if(!pin.gameObject.activeSelf)
+            if(pin == null)
+            {
                 CutWire();
+                return false;
+            }
+            else if(!pin.gameObject.activeSelf)
+            {
+                CutWire();
+                return false;
+            }
         }
+        return true;
     }
 
 
-    void CutWire()
+    public void CutWire()
     {
         foreach (var pin in connections)
         {

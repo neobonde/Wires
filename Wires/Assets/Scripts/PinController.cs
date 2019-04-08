@@ -33,7 +33,7 @@ public class PinController : MonoBehaviour
     void Update()
     {
         
-        if(Input.GetMouseButtonDown(0) && !connected && ToolController.Tool == ToolController.ToolType.WIRE){
+        if(Input.GetMouseButtonDown(0) && !connected && ToolController.SelectedTool == ToolController.ToolType.WIRE){
             ConnectWire();
         }
 
@@ -63,6 +63,7 @@ public class PinController : MonoBehaviour
             else if(connectingWire != null)
             {
                 // Connect this wire to the second pin
+                wire = connectingWire.transform;
                 connected = connectingWire.SetConnection(this);
                 // If connection was made
                 if(connected)

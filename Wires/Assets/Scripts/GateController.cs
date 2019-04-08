@@ -122,7 +122,7 @@ public class GateController : MonoBehaviour
     void Update()
     {
 
-        if(ToolController.Tool == ToolController.ToolType.EDITOR)
+        if(ToolController.SelectedTool == ToolController.ToolType.EDITOR)
         {
             if(Input.GetMouseButtonDown(0))
             {

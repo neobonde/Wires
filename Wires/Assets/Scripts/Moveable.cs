@@ -33,7 +33,7 @@ public class Moveable : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(ToolController.Tool == ToolController.ToolType.MOVE)
+        if(ToolController.SelectedTool == ToolController.ToolType.MOVE)
         {
             if(Input.GetMouseButtonDown(0))
             {
@@ -65,6 +65,27 @@ public class Moveable : MonoBehaviour
             followMouse = false;
         }
 
+        if(ToolController.SelectedTool == ToolController.ToolType.REMOVE)
+        {
+            if(Input.GetMouseButtonDown(0))
+            {
+                mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                foreach (var col in colliders)
+                {
+                    if(col.OverlapPoint(mousePosition))
+                    {
+                        // If moveable has pins disconnect them
+                        foreach (var pin in GetComponentsInChildren<PinController>())
+                        {
+                            pin.DisconnectWire();
+                        }
+                        Destroy(col.gameObject);
+                    }
+
+                }
+            }
+        }
+
 
         if(followMouse)
         {
@@ -79,6 +100,8 @@ public class Moveable : MonoBehaviour
                 {
                     if(!collider.isTrigger)
                         Physics2D.IgnoreCollision(playerRb,collider,oldIgnoreCollision);
+                    else
+                        Physics2D.IgnoreCollision(playerRb,collider,true);
                 }
                 Physics2D.IgnoreCollision(GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>(), GetComponent<Collider2D>(),oldIgnoreCollision);
                 followMouse = false;

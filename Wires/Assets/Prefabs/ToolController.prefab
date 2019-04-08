@@ -43,4 +43,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 178fbcf8834da5042b13bf1ecc6c8579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tool: 0
+  tool: 0
+  item: 0
+  uiText: {fileID: 0}
+  GatePrefab: {fileID: 8652191237090564218, guid: 8ce2a9c2702a3d2498e938bb3a21a5c3,
+    type: 3}
+  PlatePrefab: {fileID: 4386663537197179710, guid: 60c4cd2966a9fbd45887b39697fc8ce0,
+    type: 3}
+  LedPrefab: {fileID: 4430770796644734035, guid: 0d166cdcd37cc12449136a50a6864ab1,
+    type: 3}
+  LeverPrefab: {fileID: 6405006609174273940, guid: 2eda604149b4d554aa350a35cf4ec4c2,
+    type: 3}
+  WeightPrefab: {fileID: 7378774320681847846, guid: 1d7367fa4040be347b99c0b6bdb7ac98,
+    type: 3}
+  SplitterPrefab: {fileID: 4308024089255529467, guid: ed3f691e89946ee449399c91ba7127ef,
+    type: 3}
