@@ -13,6 +13,9 @@ public class GateController : MonoBehaviour
         XOR,
     }
 
+    [Header("Physics")]
+    [SerializeField] private Collider2D Collider;
+
     [Header("Sprites")]
     [SerializeField] private Sprite NOTSprite;
     [SerializeField] private Sprite ANDSprite;
@@ -27,8 +30,6 @@ public class GateController : MonoBehaviour
     [SerializeField] private bool AutoSetInterface = true;
     [SerializeField] private PinController[] InputPins = new PinController[1];
     [SerializeField] private PinController OutputPin;
-
-    private Collider2D col;
 
     void OnValidate()
     {
@@ -107,27 +108,15 @@ public class GateController : MonoBehaviour
         }
     }
 
-    void Awake()
-    {
-        col = GetComponent<Collider2D>();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
-
         if(ToolController.SelectedTool == ToolController.ToolType.EDITOR)
         {
             if(Input.GetMouseButtonDown(0))
             {
                 Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                if(col.OverlapPoint(mousePosition))
+                if(Collider.OverlapPoint(mousePosition))
                 {
                     Debug.Log("test");
                     Gate = (GateType)(((int)Gate +1)%Enum.GetNames(typeof(GateType)).Length);

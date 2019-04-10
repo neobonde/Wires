@@ -316,6 +316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd11461265dc4f74bb6bf70848ba8fb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Collider: {fileID: 0}
   NOTSprite: {fileID: 21300000, guid: d568c65a8fc00604da3106df174a77be, type: 3}
   ANDSprite: {fileID: 21300000, guid: f5d652b400a39f142a4025407be86c57, type: 3}
   ORSprite: {fileID: 21300000, guid: 3a89f1872b1d1d444a99dfa238e8c632, type: 3}
@@ -338,8 +339,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f40e7e979401e94b9d94c6554184c5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementForce: 1000
+  linearDrag: 50
+  dropDistance: 2
   uprightTorque: 100
   angularDrag: 10
+  autosetColliders: 0
+  clickableColliders: []
+  colliders:
+  - {fileID: 8652191237090564197}
 --- !u!1 &8652191237419446603
 GameObject:
   m_ObjectHideFlags: 0

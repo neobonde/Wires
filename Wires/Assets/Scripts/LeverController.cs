@@ -14,12 +14,14 @@ public class LeverController : MonoBehaviour
 
     [SerializeField] private float uprightTorque = 100; 
     [SerializeField] private Transform child;
+    [SerializeField] private Rigidbody2D ArmRigidbody;
     
     [SerializeField] private bool AutoSetInterface = true;
     [SerializeField] private PinController RightPin;
     [SerializeField] private PinController LeftPin;
     
-    private Rigidbody2D rb;
+
+    // private Rigidbody2D ArmRigidbody;
 
     //Define 3 Lever positions
     private Vector3 rightSnap = new Vector3(0.5f,0.5f,0);
@@ -41,16 +43,6 @@ public class LeverController : MonoBehaviour
     {
         if(AutoSetInterface)
             AssignPins();
-        
-        Physics2D.IgnoreCollision(GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>(), GetComponent<Collider2D>(),true);
-
-        Collider2D playerRb = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>();
-        foreach (var col in GetComponents<Collider2D>())
-        {
-            if(!col.isTrigger)
-                Physics2D.IgnoreCollision(playerRb,col,true);
-        }
-        rb = child.GetComponent<Rigidbody2D>();
     }
 
     void AssignPins()
@@ -96,7 +88,7 @@ public class LeverController : MonoBehaviour
 
     void FixedUpdate()
     {
-        //DebugHelper();
+        DebugHelper();
 
         // snap = rightSnap;
         // Find nearest snap point
@@ -122,7 +114,7 @@ public class LeverController : MonoBehaviour
         var rot = Quaternion.FromToRotation(child.up, snap);
 
         // add small torque to make lever move towards snap
-        rb.AddTorque(rot.z*uprightTorque);
+        ArmRigidbody.AddTorque(rot.z*uprightTorque);
     }
 
     void DebugHelper()

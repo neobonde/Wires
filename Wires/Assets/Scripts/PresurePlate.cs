@@ -26,7 +26,6 @@ public class PresurePlate : MonoBehaviour
 
     void Awake()
     {
-        Physics2D.IgnoreCollision(GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>(), GetComponent<Collider2D>(),true);
         sr = GetComponent<SpriteRenderer>();
         sr.sprite = OpenSprite;
         output = GetComponentInChildren<PinController>();

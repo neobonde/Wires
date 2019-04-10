@@ -43,6 +43,11 @@ public class PinController : MonoBehaviour
         }
     }
 
+    void OnDestroy()
+    {
+        DisconnectWire();
+    }
+
     void ConnectWire()
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
