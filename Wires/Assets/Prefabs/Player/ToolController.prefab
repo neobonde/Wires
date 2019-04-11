@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4040980788174571511
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4040980788174571497}
+  - component: {fileID: 4040980788174571496}
+  m_Layer: 0
+  m_Name: ToolController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4040980788174571497
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4040980788174571511}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.1331153, y: -0.79488647, z: -3.7861328}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4040980788174571496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4040980788174571511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 178fbcf8834da5042b13bf1ecc6c8579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tool: 0
+  item: 0
+  uiText: {fileID: 0}
+  GatePrefab: {fileID: 1749430009927916799, guid: 93b43c65c157c19498a657d10c33671e,
+    type: 3}
+  PlatePrefab: {fileID: 752942293591080827, guid: c44060e41ab4fa64a9066476468606bc,
+    type: 3}
+  LedPrefab: {fileID: 5607676279082070963, guid: bb440a66bc8f24442ab2aac514fd6002,
+    type: 3}
+  LeverPrefab: {fileID: 3345230355322634415, guid: 93d1297b92ca33a49968ff6550b75c91,
+    type: 3}
+  WeightPrefab: {fileID: 8324135027891088527, guid: e84d2859a1792544485cdd20ac6bee2d,
+    type: 3}
+  SplitterPrefab: {fileID: 8347268117382527840, guid: b1a0260392432c949b1ca65ccd1fc220,
+    type: 3}
