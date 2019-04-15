@@ -1,168 +1,151 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
+
+[RequireComponent(typeof(LineRenderer),typeof(EdgeCollider2D))]
 public class WireController : MonoBehaviour
 {
-    private LineRenderer wire;
-    private EdgeCollider2D col;
+    private int connectedPins = 0;
+    public PinController[] connections = new PinController[2];
+    private Vector2 mousePosition = Vector2.zero;
 
-    private List<PinController> connections;
-    private Vector3 connection1;
-    private Vector3 connection2;
+    private LineRenderer wireRenderer;
+    private EdgeCollider2D clickableArea;
     private bool state = false;
 
     void Awake()
     {
-        connections = new List<PinController>();
-        wire = GetComponent<LineRenderer>();
-        col = GetComponent<EdgeCollider2D>();
-        col.edgeRadius = wire.startWidth*2;
+        wireRenderer = GetComponent<LineRenderer>();
+        clickableArea = GetComponent<EdgeCollider2D>();
+        InitConnections();
     }
+
+    public void InitConnections()
+    {
+        transform.position = Vector2.zero;
+        connectedPins = 0;
+        foreach (var pin in connections)
+        {
+            if(pin != null)
+            {
+                connectedPins ++;
+            }
+        }
+    }
+
+
 
     void Update()
     {
-        UpdatePosition();
-        UpdateStates();
-        CheckConnections();
+        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Updater(mousePosition);
+    }
+
+    public void Updater(Vector2 mousePos)
+    {
+        if(wireRenderer == null)
+            wireRenderer = GetComponent<LineRenderer>();
+
+        if(clickableArea == null)
+            clickableArea = GetComponent<EdgeCollider2D>();
+
+        if(connectedPins == 1)
+        {
+            int i = connections[0] == null?1:0;
+            wireRenderer.SetPosition(0,new Vector3(connections[i].transform.position.x, connections[i].transform.position.y, transform.position.z));
+            wireRenderer.SetPosition(1,new Vector3(mousePos.x, mousePos.y, transform.position.z));
+        
+            if(Input.GetKeyDown(KeyCode.Escape))
+            {
+                connections[i].wire = null;
+                Destroy(gameObject);
+                connectedPins --;
+            }
+
+            if(ToolController.SelectedTool != ToolController.ToolType.WIRE)
+            {
+                connections[i].wire = null;
+                Destroy(gameObject);
+                connectedPins --;
+            }        
+        }
+        else if(connectedPins == 2)
+        {
+            Vector3 pos1 = new Vector3(connections[0].transform.position.x, connections[0].transform.position.y, transform.position.z);
+            Vector3 pos2 = new Vector3(connections[1].transform.position.x, connections[1].transform.position.y, transform.position.z);
+            wireRenderer.SetPosition(0,pos1);
+            wireRenderer.SetPosition(1,pos2);
+            clickableArea.points = new Vector2[] { pos1, pos2};
+
+            foreach (var pin in connections)
+            {
+                if(pin.input)
+                    pin.SetState(state);
+                else
+                    state = pin.GetState();
+            }
+
+            if(Input.GetMouseButtonDown(0) && (ToolController.SelectedTool == ToolController.ToolType.WIRE_CUTTER) && Application.isPlaying)
+            {
+                if(clickableArea.OverlapPoint(mousePosition))
+                {
+                    foreach (var pin in connections)
+                    {
+                        pin.wire = null;
+                    }
+                    Destroy(gameObject);
+                }
+            }
+
+        }
     }
 
     void OnDestroy()
     {
         foreach (var pin in connections)
         {
-            if(pin.input)
-                pin.SetState(false);
+            if(pin != null)
+                pin.wire = null;
         }
         Destroy(gameObject);
     }
 
-    void UpdateStates()
+
+    public WireController SetConnection(PinController pin)
     {
-        foreach (var connection in connections)
+        if (connectedPins >= 2)
+            return null;
+        
+        if(connectedPins == 1)
         {
-            if(connection.input)
-            {
-                connection.SetState(state);
-            }else
-            {
-                state = connection.GetState();
-            }
+            int i = connections[0] == null?1:0;
+            if (pin.transform.parent == connections[i].transform.parent)
+                return null;
+
+            if(pin.input == connections[i].input)
+                return null;
         }
-    }
-
-
-    void UpdatePosition()
-    {
-        // If reference to pins is lost disconnect self
-        if (!CheckConnections())
-            return;
-
-        if(connections.Count == 1)
-        {
-            // If tool changes cancel wire
-            if(ToolController.SelectedTool != ToolController.ToolType.WIRE)
-                Cut();
-            
-            //If one connection exists the one side of the wire follows the mouse
-            connection1 = new Vector3(connections[0].transform.position.x, connections[0].transform.position.y, transform.position.z);
-            connection2 = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, transform.position.z);
-            wire.SetPosition(0,connection1);
-            wire.SetPosition(1,connection2);
-            col.points = new Vector2[] { connection1, connection2};
-        }
-        else if(connections.Count == 2)
-        {
-            
-            //if there are two connections then the wire is stuck between to gates
-            connection1 = new Vector3(connections[0].transform.position.x, connections[0].transform.position.y, transform.position.z);
-            connection2 = new Vector3(connections[1].transform.position.x, connections[1].transform.position.y, transform.position.z);
-            wire.SetPosition(0,connection1);
-            wire.SetPosition(1,connection2);
-            col.points = new Vector2[] { connection1, connection2};
-        }
-
-        if(ToolController.SelectedTool == ToolController.ToolType.WIRE_CUTTER)
-        {
-            if(Input.GetMouseButtonDown(0))
-            {
-                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                if(col.OverlapPoint(mousePosition))
-                {
-                    Cut();
-                }
-
-            }
-        }
-
-        if(Input.GetKeyDown(KeyCode.Escape) && connections.Count == 1)
-        {
-            Disconnect();
-        }
-    }
-
-    bool CheckConnections()
-    {
-        if(connections.Count <= 0)
-        {
-            Destroy(this);
-            return false;
-        }
-        foreach (var pin in connections)
-        {
-            if(!pin.isActiveAndEnabled)
-            {
-                Destroy(this);
-                return false;
-            }
-        }
-        return true;
-    }
-
-    
-    public WireController Connect(PinController pin)
-    {        
-        if(connections.Count >= 2 )
-            return this;
-
-        if(connections.Count > 0)
-        {
-            foreach (var connection in connections)
-            {
-                if(connection.GetParentDevice() == pin.GetParentDevice())
-                    return null;
-                if(connection.input == pin.input)
-                    return null;
-            }
-        }
-
-        connections.Add(pin);
+        
+        connections[connectedPins] = pin;
+        connectedPins++;
         return this;
     }
 
-    private bool Disconnect()
+    public bool RemoveConnection(PinController pin)
     {
-        if(connections.Count <= 0)
+        if(connectedPins <= 0)
             return false;
 
-        connections.Clear();
-        return true;
-    }
-
-    public bool Disconnect(PinController pin)
-    {
-        if(connections.Count <= 0)
-            return false;
-        if(pin.input)
-            pin.SetState(false);
-        else
-            state = false;
-        return connections.Remove(pin);
-    }
-
-
-    public void Cut()
-    {
-        Destroy(this);
+        for(int i = 0; i < 2; i++){
+            if(connections[i] == pin){
+                connections[i] = null;
+                connectedPins--;
+                return true;
+            }
+        }
+        return false;
     }
 }

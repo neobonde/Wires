@@ -10,7 +10,7 @@ public class Moveable : MonoBehaviour
     [Header("Dragging Parameters")]
     [SerializeField] private float movementForce = 150.0f;
     [SerializeField] private float linearDrag = 12.5f;
-    [SerializeField] private float dropDistance = 5.0f;
+    [SerializeField] private float dropDistance = 100.0f;
     
     [Header("Uprighting Parameters")]
     [SerializeField] private float uprightTorque = 100.0f;

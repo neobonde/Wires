@@ -273,7 +273,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementForce: 150
   linearDrag: 12.5
-  dropDistance: 5
+  dropDistance: 100
   uprightTorque: 100
   angularDrag: 5
   autosetColliders: 0

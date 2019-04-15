@@ -15,27 +15,22 @@ public class PlayerController : MonoBehaviour
     [Range(0,10f)] [SerializeField] private float fallMultiplier = 5f;
     [Range(0,10)] [SerializeField] public float slowJumpMultiplier = 2.0f;
 
-
-    [Header("Events")]
-	[Space]
-	public UnityEvent OnMoveEvent;
-	public UnityEvent OnStopEvent;
-	public UnityEvent OnJumpEvent;
-	public UnityEvent OnLandEvent;
-
-
-    const float groundedRadius = .2f;
+    const float groundedRadius = .1f;
     private Vector2 movement;
     private Rigidbody2D rb;
     private Vector3 velocity = Vector3.zero;
-    private bool grounded;
     private bool facingRight = true;
+    private bool _jumpFloat = false;
+    private bool _jump = false;
+
+    private bool _grounded;
+    private bool _jumping;
+    private bool _moving;
+
 
     void Awake()
     {
         rb = transform.GetComponent<Rigidbody2D>();
-
-        SetupEvents();
     }
 
     // Start is called before the first frame update
@@ -48,43 +43,77 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         movement= Vector2.right * Input.GetAxis("Horizontal");
+        // if(landed){
+        //     landed = false;
+            
+        // }
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(groundCheck.position,groundedRadius);
     }
 
     void FixedUpdate()
     {
-        bool wasGrounded = grounded;
-        grounded = false;
+        bool wasGrounded = _grounded;
+        _grounded = false;
 
         Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position,groundedRadius,groundLayers);
         foreach (Collider2D collider in colliders)
         {
-            if(collider.gameObject != gameObject)
+            if((collider.gameObject != gameObject) && !collider.isTrigger)
             {
-                grounded = true;
+                _grounded = true;
                 if(!wasGrounded && rb.velocity.y < 0)
                 {
-                    OnLandEvent.Invoke();
+                    _jumping = false;
                 }
             }
         }
-        
 
+        // If the player should jump...
+		if (_grounded && _jump)
+		{
+			// Add a vertical force to the player.
+			rb.AddForce(new Vector2(0f, m_JumpForce));
+			_grounded = false;
+            _jumping = true;
+		}
+            
+        _jump = false;
+
+        if(rb.velocity.y < 0 )
+        {
+            rb.velocity += Vector2.up * Physics2D.gravity.y * ( fallMultiplier - 1 ) * Time.fixedDeltaTime;
+        }else if (rb.velocity.y > 0 && !_jumpFloat)
+        {
+            rb.velocity += Vector2.up * Physics2D.gravity.y * ( slowJumpMultiplier - 1 ) * Time.fixedDeltaTime; 
+        }
     }
 
 
-    public void Move(float move, bool jump, bool jumping)
+    public void Move(float move, bool jump, bool jumpFloat)
     {
 
         Vector3 targetVelocity = new Vector2(move * movementSpeed, rb.velocity.y);
         // And then smoothing it out and applying it to the character
         rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, movementSmoothing);
 
+
+        if(jump)
+            _jump = true;
+        
+        _jumpFloat = jumpFloat; 
+
+
         if(move == 0)
         {
-            OnStopEvent.Invoke();    
+            _moving = false;    
         }else
         {
-            OnMoveEvent.Invoke();
+            _moving = true;
         }
 
         if(move > 0 && !facingRight)
@@ -94,24 +123,6 @@ public class PlayerController : MonoBehaviour
         else if (move < 0 && facingRight)
         {
             Flip();
-        }
-
-
-        // If the player should jump...
-		if (grounded && jump)
-		{
-			// Add a vertical force to the player.
-			grounded = false;
-			rb.AddForce(new Vector2(0f, m_JumpForce));
-            OnJumpEvent.Invoke();
-		}
-
-        if(rb.velocity.y < 0 )
-        {
-            rb.velocity += Vector2.up * Physics2D.gravity.y * ( fallMultiplier - 1 ) * Time.fixedDeltaTime;
-        }else if (rb.velocity.y > 0 && !jumping)
-        {
-            rb.velocity += Vector2.up * Physics2D.gravity.y * ( slowJumpMultiplier - 1 ) * Time.fixedDeltaTime; 
         }
     }
 
@@ -124,19 +135,20 @@ public class PlayerController : MonoBehaviour
         transform.localScale = scale;
     }
 
-    void SetupEvents()
+
+    public bool GetGrounded()
     {
-        if (OnMoveEvent == null)
-            OnMoveEvent = new UnityEvent();
+        return _grounded;
+    }
 
-        if (OnStopEvent == null)
-			    OnStopEvent = new UnityEvent();
+    public bool GetJumping()
+    {
+        return _jumping;  
+    }
 
-        if (OnJumpEvent == null)
-			    OnJumpEvent = new UnityEvent();
-
-        if (OnLandEvent == null)
-			    OnLandEvent = new UnityEvent();
+    public bool GetMoving()
+    {
+        return _moving;
     }
 
 }

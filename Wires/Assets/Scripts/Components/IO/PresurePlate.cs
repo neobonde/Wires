@@ -41,14 +41,7 @@ public class PresurePlate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(sr.sprite == ClosedSprite && !output.GetState())
-        {
-            output.SetState(true);
-        }
-        if(sr.sprite == OpenSprite && output.GetState())
-        {
-            output.SetState(false);
-        }
+
     }
 
 

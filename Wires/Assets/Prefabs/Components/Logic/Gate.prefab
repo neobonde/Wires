@@ -96,7 +96,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementForce: 150
   linearDrag: 12.5
-  dropDistance: 5
+  dropDistance: 100
   uprightTorque: 100
   angularDrag: 50
   autosetColliders: 1
@@ -237,11 +237,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Input3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1100062907167729777, guid: 634812c066b2e434facb044b68f55c74,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1100062907167729776, guid: 634812c066b2e434facb044b68f55c74,
         type: 3}
@@ -421,11 +416,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Input1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1100062907167729777, guid: 634812c066b2e434facb044b68f55c74,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1100062907167729776, guid: 634812c066b2e434facb044b68f55c74,
         type: 3}

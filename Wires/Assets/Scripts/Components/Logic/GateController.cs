@@ -119,10 +119,15 @@ public class GateController : MonoBehaviour
                 if(Collider.OverlapPoint(mousePosition))
                 {
                     Debug.Log("test");
+                    GateType oldGate = Gate;
                     Gate = (GateType)(((int)Gate +1)%Enum.GetNames(typeof(GateType)).Length);
                     Debug.Log(Gate.ToString());
                     SelectSprite();
-                    SetInterface();
+                    if(oldGate == GateType.NOT || Gate == GateType.NOT)
+                    {
+                        SetInterface();
+                    }
+                    
                 }
             }
         }

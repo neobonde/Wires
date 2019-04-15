@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1301830892727673348}
   - component: {fileID: 5257790821139281230}
   - component: {fileID: 539747394}
+  - component: {fileID: 527008333}
   m_Layer: 11
   m_Name: Wire
   m_TagString: Untagged
@@ -71,8 +72,8 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 5, y: -1000, z: 1}
-  - {x: 0, y: -1000, z: 1}
+  - {x: 5, y: -1000, z: -1}
+  - {x: 0, y: -1000, z: -1}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.1
@@ -140,6 +141,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c9198c56e584743a7d71a31eab90ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  connections:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!68 &539747394
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -154,7 +158,19 @@ EdgeCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0.1
+  m_EdgeRadius: 0.084253564
   m_Points:
-  - {x: 0, y: -1000}
-  - {x: 5, y: -1000}
+  - {x: -18.93088, y: -2.5802965}
+  - {x: -14.612648, y: -2.5962844}
+--- !u!114 &527008333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1301830892727673349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 747d2482eda16b9488365d5f48d61645, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

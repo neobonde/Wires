@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Collider2D))]
 public class PinController : MonoBehaviour
 {
 
     [SerializeField] public bool input;
     [SerializeField] private Transform wirePrefab;
-    private WireController wire;
+    [SerializeField] public WireController wire = new WireController();
     private Camera cam;
     private CircleCollider2D col;
     // private bool connected = false;
@@ -35,9 +36,15 @@ public class PinController : MonoBehaviour
     {
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if(Input.GetMouseButtonDown(0) && (wire == null) && ToolController.SelectedTool == ToolController.ToolType.WIRE){
-            ConnectWire();
+            if(col.OverlapPoint(mousePosition))
+            {
+                ConnectWire();
+            }
         }else if(Input.GetMouseButtonDown(0) && (wire != null) && (connectingWire == null) && ToolController.SelectedTool == ToolController.ToolType.WIRE){
-            MoveWire();
+            if(col.OverlapPoint(mousePosition))
+            {
+                MoveWire();
+            }
         }
     }
 
@@ -47,11 +54,19 @@ public class PinController : MonoBehaviour
             Destroy(wire);
     }
 
-    void ConnectWire()
+    void OnDisable()
     {
-        if(col.OverlapPoint(mousePosition))
+        if(!isActiveAndEnabled)
         {
-            Debug.Log(name);
+            if(wire!=null)
+                Destroy(wire);
+        }
+    }
+
+    public void ConnectWire()
+    {
+
+            Debug.Log("Connect wire: " + transform.parent.transform.parent.name +"." + name);
             // If no wire is currently being connected
             if(connectingWire == null)
             {
@@ -60,40 +75,28 @@ public class PinController : MonoBehaviour
                 //Create a static reference to new wire
                 connectingWire = wire.GetComponent<WireController>();
                 // Connect wire and reserve this pin from further connections
-                wire = connectingWire.Connect(this);
+                wire = connectingWire.SetConnection(this);
             }
             // If a wire is being connected
             else if(connectingWire != null)
             {
                 // Connect this wire to the second pin
-                wire = connectingWire.Connect(this);
+                wire = connectingWire.SetConnection(this);
                 // If connection was made
                 if(wire != null)
                     // Remove static reference to wire, so a new wire can be created
                     connectingWire = null;
 
             }
-
-        }
     }
 
-    void MoveWire()
+    public void MoveWire()
     {
-        if(col.OverlapPoint(mousePosition))
+        if(wire.RemoveConnection(this))
         {
-            if(wire.Disconnect(this))
-            {
-                connectingWire = wire;
-                wire = null;
-            }
-            
+            connectingWire = wire;
+            wire = null;
         }
-    }
-
-
-    public Transform GetParentDevice()
-    {
-        return transform.parent;
     }
 
     public bool GetState()
